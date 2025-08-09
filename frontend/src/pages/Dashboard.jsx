@@ -12,11 +12,11 @@ const Dashboard = () => {
     const fetchAccraData = async () => {
     try {
       const res = await getCityAirQuality('Ghana', 'Eastern', 'Akropong');
-      console.log(res?.data);
+      // console.log(res?.data);
       setData(res.data.data);
     } catch (err) {
-      console.error(err?.message);
-      setError(err);
+      // console.error(err?.message);
+      setError(err?.message);
     } finally {
       setLoading(false);
     }
