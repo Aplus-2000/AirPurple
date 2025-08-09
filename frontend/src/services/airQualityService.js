@@ -7,14 +7,7 @@ const API_KEY = import.meta.env.VITE_IQAIR_API_KEY;
 // http://api.airvisual.com/v2/states?country={{COUNTRY_NAME}}&key={{YOUR_API_KEY}}
 
 export const getCityAirQuality = (country, state, city) => {
-  return axios.get(`http://api.airvisual.com/v2/stations?city=${city}&state=${state}&country=${country}&key=${API_KEY}`, {
-    // params: {
-    //   country,
-    //   state,
-    //   city,
-    //   key: API_KEY,
-    // },
-  });
+  return axios.get(`http://api.airvisual.com/v2/city?city=${city}&state=${state}&country=${country}&key=${API_KEY}`);
 };
 
 export const getNearestCityAirQuality = (lat, lon) => {

@@ -8,18 +8,47 @@ const Dashboard = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
 
-  const fetchAccraData = async () => {
+  useEffect(()=>{
+    const fetchAccraData = async () => {
     try {
-      const res = await getCityAirQuality('Ghana', 'Eastern', 'Koforidua');
+      const res = await getCityAirQuality('Ghana', 'Eastern', 'Akropong');
       console.log(res?.data);
       setData(res.data.data);
     } catch (err) {
-      console.error(err);
+      console.error(err?.message);
       setError(err);
     } finally {
       setLoading(false);
     }
   };
+
+  fetchAccraData();
+  }, [])
+
+  
+  if (loading) return <Loader />;
+
+  if (error && !data) {
+    return <p className="text-red-600 text-center mt-6">{error}</p>;
+  }
+
+  if (!data?.current) {
+    return <p className="text-red-500 text-center mt-10">No air quality data available.</p>;
+  }
+
+  return (
+    <div className="p-4">
+      {error && <p className="text-yellow-500 text-center mb-4">{error}</p>}
+      <AQCard
+        location={data.city}
+        pollution={data.current.pollution}
+        weather={data.current.weather}
+      />
+    </div>
+  );
+};
+
+export default Dashboard;
 
   // const fetchUserLocationData = () => {
   //   navigator.geolocation.getCurrentPosition(
@@ -49,35 +78,11 @@ const Dashboard = () => {
   //   );
   // };
 
-  useEffect(() => {
-    if (navigator.geolocation) {
-      // fetchUserLocationData();
-    } else {
-      setError('Geolocation not supported. Loading Accra data...');
-      fetchAccraData();
-    }
-  }, []);
-
-  if (loading) return <Loader />;
-
-  if (error && !data) {
-    return <p className="text-red-600 text-center mt-6">{error}</p>;
-  }
-
-  if (!data?.current) {
-    return <p className="text-red-500 text-center mt-10">No air quality data available.</p>;
-  }
-
-  return (
-    <div className="p-4">
-      {error && <p className="text-yellow-500 text-center mb-4">{error}</p>}
-      <AQCard
-        location={data.city}
-        pollution={data.current.pollution}
-        weather={data.current.weather}
-      />
-    </div>
-  );
-};
-
-export default Dashboard;
+  // useEffect(() => {
+  //   if (navigator.geolocation) {
+  //     // fetchUserLocationData();
+  //   } else {
+  //     setError('Geolocation not supported. Loading Accra data...');
+  //     fetchAccraData();
+  //   }
+  // }, []);
